@@ -1,0 +1,12 @@
+                                
+
+
+given_circles = {};
+given_points = {Ma, G, Hb};
+given_lines = {};
+given_angles = {};
+
+goal_circles = {};
+goal_points = {A, B, C};
+goal_lines = {};
+goal_angles = {};

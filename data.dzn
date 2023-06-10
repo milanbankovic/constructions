@@ -1,0 +1,566 @@
+Point = { A, B, C, O, I, G, H, Ma, Mb, Mc, Ta, Tb, Tc, Ha, Hb, Hc, Pa, Pb, Pc, Na, Nb, Nc, Ppa, Ppb, Ppc, Sa, Sb, Sc, Tpa, Tpb, Tpc };
+Line = { a, b, c, ma, mb, mc, sa, sb, sc, ha, hb, hc, ta, tb, tc, mta, mtb, mtc, spa, spb, spc, ra, rb, rc, rpa, rpb, rpc, lIMa, lAPpa, lhPa, lIMb, lBPpb, lhPb, lIMc, lCPpc, lhPc, hab, hac, hbc, oa, ob, oc };
+Circle = { kO, kI, kMa, kMb, kMc, kNa, kNb, kNc, kSa, kSb, kSc, koIA, koIB, koIC, koIMa, koIMb, koIMc, koSaB, koSaC, koSbA, koSbC, koScA, koScB, koTaTpa, koTbTpb, koTcTpc, locTaHbAlpha2, locTaHcAlpha2, locTbHcBeta2, locTbHaBeta2, locTcHaGamma2, locTcHbGamma2,  locTbTcAlpha2Pi2, locTaTbGamma2Pi2, locTaTcBeta2Pi2, locTaTbGamma, locTaTbAlpha2, locTaTbBeta2, 
+locaTaTcBeta, locTaTcAlpha2, locTaTcGamma2, locTbTcAlpha, locTbTcBeta2, locTbTcGamma2, locTbIAlpha2, locTcIAlpha2, locTaIBeta2, locTcIBeta2, locTbIGamma2, locTaIGamma2 };
+Angle = { Alpha, Beta, Gamma, aHa, aHb, aHc, aA, aB, aC };  
+  
+inc_lines = [ { b, c, sa, ha, ta, spa, lAPpa, oa }, % A
+                     { a, c, sb, hb, tb, spb, lBPpb, ob }, % B
+                     { a, b, sc, hc, tc, spc, lCPpc, oc }, % C
+                     { ma, mb, mc, oa, ob, oc },    % O
+                     { sa, sb, sc, ra, rb, rc, lIMa, lIMb, lIMc },        % I
+                     { ta, tb, tc },         % G
+                     { ha, hb, hc },       % H
+                     { a, ma, ta, mtb, mtc, lIMa },  % Ma
+                     { b, mb, tb, mta, mtc, lIMb },  % Mb
+                     { c, mc, tc, mta, mtb, lIMc },  % Mc
+                     { a, sa },  % Ta
+                     { b, sb },  % Tb
+                     { c, sc },  % Tc
+                     { a, ha, hab, hac },  % Ha
+                     { b, hb, hab, hbc },  % Hb
+                     { c , hc, hac, hbc},  % Hc 
+                     { a, ra, lhPa }, % Pa 
+                     { b, rb, lhPb }, % Pb
+                     { c, rc, lhPc }, % Pc
+                     { sa, ma }, % Na
+                     { sb, mb }, % Nb
+                     { sc, mc }, % Nc
+                     { a, rpa, lAPpa }, % Ppa
+                     { b, rpb, lBPpb }, % Ppb
+                     { c, rpc, lCPpc }, % Ppc
+                     { spb, spc, rpa, sa }, % Sa
+                     { spa, spc, rpb, sb }, % Sb
+                     { spa, spb, rpc, sc }, % Sc
+                     {a, spa },  % Tpa
+                     {b, spb },  % Tpb
+                     {c, spc }  % Tpc
+                   ];  
+                              
+perp_lines =  [ { ma, ha, ra, rpa },  % a
+                         { mb, hb, rb, rpb },  % b
+                         { mc, hc, rc, rpc },   % c
+                         { a, mta },   % ma
+                         { b, mtb },   % mb
+                         { c, mtc },   % mc
+                         {spa },        % sa
+                         {spb },        % sb
+                         {spc },        % sc
+                         {a, mta },    % ha
+                         {b, mtb },    % hb
+                         {c, mtc },    % hc
+                         {},               % ta
+                         {},               % tb
+                         {},               % tc
+                         { ma, ha, ra, rpa }, % mta
+                         { mb, hb, rb, rpb }, % mtb
+                         { mc, hc, rc, rpc },  % mtc         
+                         { sa } ,             % spa 
+                         { sb },              % spb
+                         { sc },              % spc 
+                         { a, mta },       % ra
+                         { b, mtb },       % rb
+                         { c, mtc },        % rc
+                         { a, mta },        % rpa
+                         { b, mtb },        % rpb
+                         { c, mtc },         % rpc        
+                         {}, % lIMa 
+                         {}, % lAPpa
+                         {}, %  lhPa
+                         {}, % lIMb
+                         {}, % lBPpb
+                         {}, % lhPb, 
+                         {}, % lIMc, 
+                         {}, % lCPpc,
+                         {}, %  lhPc          
+                         {}, % hab
+                         {}, % hac
+                         {}, % hbc                    
+                         {}, % oa
+                         {}, % ob
+                         {}, % oc                              
+                       ];                                                        
+                                                                                                                                                                                                                                                                                                                            
+inc_circles = [ { kO, kMb, kMc, kNb, kNc, koIA,  koSbA, koScA, koTaTpa,  locTaHbAlpha2,  locTaHcAlpha2, locTaTbAlpha2, locTaTcAlpha2, locTbTcAlpha, locTbIAlpha2, locTcIAlpha2 }, % A
+                        { kO, kMa, kMc, kNa, kNc, koIB, koSaB, koScB, koTbTpb,  locTbHcBeta2, locTbHaBeta2, locTaTbBeta2, locaTaTcBeta, locTbTcBeta2, locTaIBeta2, locTcIBeta2 }, % B
+                        { kO, kMa, kMb, kNa, kNb, koIC, koSaC, koSbC, koTcTpc,  locTcHaGamma2, locTcHbGamma2,  locTaTbGamma,locTaTcGamma2, locTbTcGamma2, locTbIGamma2, locTaIGamma2 }, % C
+                        { },      %  O
+                        {kNa, kNb, kNc, koIA, koIB, koIC, koIMa, koIMb, koIMc,  locTbTcAlpha2Pi2, locTaTbGamma2Pi2, locTaTcBeta2Pi2,locTbIAlpha2, locTcIAlpha2, locTaIBeta2, locTcIBeta2, locTbIGamma2, locTaIGamma2 },    % I
+                        {},       % G
+                        {},       % H
+                        {koIMa},       % Ma
+                        {koIMb},       % Mb
+                        {koIMc},       % Mc             
+                        { koTaTpa, locTaHbAlpha2, locTaHcAlpha2, locTaTbGamma2Pi2, locTaTcBeta2Pi2, locTaTbGamma, locTaTbAlpha2, locTaTbBeta2, locaTaTcBeta, locTaTcAlpha2, locTaTcGamma2,locTaIBeta2,  locTaIGamma2 },  % Ta
+                        { koTbTpb,locTbHcBeta2, locTbHaBeta2,  locTbTcAlpha2Pi2, locTaTbGamma2Pi2,  locTaTbGamma, locTaTbAlpha2, locTaTbBeta2, locTbTcAlpha, locTbTcBeta2, locTbTcGamma2, locTbIAlpha2,  locTbIGamma2 },  % Tb
+                        { koTcTpc, locTcHaGamma2, locTcHbGamma2,  locTbTcAlpha2Pi2, locTaTcBeta2Pi2, locaTaTcBeta, locTaTcAlpha2, locTaTcGamma2, locTbTcAlpha, locTbTcBeta2, locTbTcGamma2,  locTcIAlpha2,locTcIBeta2 },  % Tc
+                        {kMb, kMc,  locTbHaBeta2, locTcHaGamma2 },        % Ha
+                        {kMa, kMc, locTaHbAlpha2,  locTcHbGamma2},        % Hb
+                        {kMa, kMb, locTaHcAlpha2, locTbHcBeta2 },        % Hc
+                        { kI, koIB, koIC, koIMa  }, % Pa  
+                        { kI, koIA, koIC, koIMb }, % Pb
+                        { kI, koIA, koIB, koIMc }, % Pc
+                        { kO }, % Na
+                        { kO }, % Nb
+                        { kO }, % Nc
+                        { kSa, koSaB, koSaC }, % Ppa
+                        { kSb, koSbA, koSbC }, % Ppb
+                        { kSc, koScA, koScB }, % Ppc
+                        { kNa, koSaB, koSaC }, % Sa
+                        { kNb, koSbA, koSbC }, % Sb
+                        { kNc, koScA, koScB }, % Sc
+                        { koTaTpa }, % Tpa
+                        { koTbTpb }, % Tpb
+                        { koTcTpc }, % Tpc
+                      ];
+                      
+circle_center = [ O, % kO
+                            I,  % kI
+                            Ma, % kMa
+                            Mb, % kMb
+                            Mc, % kMc
+                            Na, % kNa
+                            Nb, % kNb
+                            Nc, % kNc
+                            Sa, % kSa
+                            Sb, % kSb
+                            Sc, % kSc
+                            <>, %koIA
+                            <>, % koIB
+                            <>, % koIC
+                            <>, % koIMa, 
+                            <>, % koIMb
+                            <>, % koIMc
+                            <>, % koSaB
+                            <>, % koSaC
+                            <>, % koSbA
+                            <>, % koSbC
+                            <>, % koScA
+                            <>, % koScB
+                            <>, % koTaTpa
+                            <>, % koTbTpb
+                            <>, % koTcTpc
+                            <>, % locTaHbAlpha2 
+                            <>, % locTaHcAlpha2
+                            <>, % locTbHcBeta2
+                            <>, % locTbHaBeta2
+                            <>, % locTcHaGamma2
+                            <>, % locTcHbGamma2 
+                            <>, % locTbTcAlpha2Pi2
+                            <>, % locTaTbGamma2Pi2
+                            <>, % locTaTcBeta2Pi2
+                            <>, % locTaTbGamma
+                            <>, % locTaTbAlpha2
+                            <>, % locTaTbBeta2
+                            <>, % locaTaTcBeta, 
+                            <>, % locTaTcAlpha2, 
+                            <>, % locTaTcGamma2, 
+                            <>, % locTbTcAlpha, 
+                            <>, % locTbTcBeta2, 
+                            <>, % locTbTcGamma2
+                            <>, % locTbIAlpha2
+                            <>, % locTcIAlpha2
+                            <>, % locTaIBeta2
+                            <>, % locTcIBeta2
+                            <>, % locTbIGamma2
+                            <>, % locTaIGamma2
+                          ];
+
+circle_diameter = [|<>, <>|  % kO
+                                <>, <>|  % kI
+                                B, C| % kMa
+                                A, C| % kMb
+                                A, B| % kMc
+                                <>, <>| % kNa
+                                <>, <>| % kNb
+                                <>, <>| % kNc
+                                <>, <>| % kSa
+                                <>, <>| % kSb
+                                <>, <>| % kSc
+                                A, I| %koIA
+                                B, I| % koIB
+                                C, I| % koIC
+                                I, Ma| % koIMa, 
+                                I, Mb| % koIMb
+                                I, Mc| % koIMc
+                                B, Sa| % koSaB
+                                C, Sa| % koSaC
+                                A, Sb| % koSbA
+                                C, Sb| % koSbC
+                                A, Sc| % koScA
+                                B, Sc| % koScB
+                                Ta,Tpa| % koTaTpa
+                                Tb,Tpb| % koTbTpb
+                                Tc,Tpc| % koTcTpc
+                                <>, <>| % locTaHbAlpha2
+                                <>, <>| % locTaHcAlpha2
+                                <>, <>| % locTbHcBeta2
+                                <>, <>| % locTbHaBeta2
+                                <>, <>| % locTcHaGamma2
+                                <>, <>| % locTcHbGamma2    
+                                <>, <>| % locTbTcAlpha2Pi2, 
+                                <>, <>| % locTaTbGamma2Pi2, 
+                                <>, <>| % locTaTcBeta2Pi2
+                                <>, <>| % locTaTbGamma
+                                <>, <>| % locTaTbAlpha2
+                                <>, <>| % locTaTbBeta2
+                                <>, <>| % locaTaTcBeta
+                                <>, <>| % locTaTcAlpha2
+                                <>, <>| % locTaTcGamma2
+                                <>, <>| % locTbTcAlpha
+                                <>, <>| % locTbTcBeta2
+                                <>, <>| % locTbTcGamma2      
+                                <>, <>| % locTbIAlpha2
+                                <>, <>| % locTcIAlpha2
+                                <>, <>| % locTaIBeta2
+                                <>, <>| % locTcIBeta2
+                                <>, <>| % locTbIGamma2
+                                <>, <>|]; % locTaIGamma2       
+
+ tangent_lines = [ { }, % kO
+                              { a, b, c }, % kI
+                              {}, % kMa
+                              {}, % kMb
+                              {}, % kMc
+                              {}, % kNa
+                              {}, %kNb
+                              {}, %kNc
+                              {a, b, c}, %kSa
+                              {a, b, c}, %kSb
+                              {a, b, c}, %kSc
+                              { spa }, %koIA
+                              { spb }, % koIB
+                              { spc }, % koIC
+                              {}, % koIMa, 
+                              {}, % koIMb
+                              {}, % koIMc
+                              { sb }, % koSaB
+                              { sc }, % koSaC
+                              { sa }, % koSbA
+                              { sc }, % koSbC
+                              { sa }, % koScA
+                              { sb }, % koScB
+                              { }, % koTaTpa
+                              { }, % koTbTpb
+                              { }, % koTcTpc
+                              { }, % locTaHbAlpha2
+                              {}, % locTaHcAlpha2
+                              { }, % locTbHcBeta2, 
+                              { }, % locTbHaBeta2, 
+                              { }, % locTcHaGamma2
+                              { }, %  locTcHbGamma2
+                              { }, % locTbTcAlpha2Pi2
+                              { }, % locTaTbGamma2Pi2
+                              { }, % locTaTcBeta2Pi2
+                              { }, % locTaTbGamma
+                              { }, % locTaTbAlpha2
+                              { }, % locTaTbBeta2, 
+                              { }, % locaTaTcBeta, 
+                              { }, % locTaTcAlpha2, 
+                              { }, % locTaTcGamma2, 
+                              { }, % locTbTcAlpha, 
+                              { }, % locTbTcBeta2, 
+                              { }, % locTbTcGamma2 
+                              { }, % locTbIAlpha2
+                              { }, % locTcIAlpha2
+                              { }, % locTaIBeta2
+                              { }, % locTcIBeta2
+                              { }, % locTbIGamma2
+                              { }, % locTaIGamma2 
+                            ];                                                      
+                                                                                                                                                            
+coincident_points = [ { A }, % A
+                                   { B }, % B
+                                   { C }, % C
+                                   { O }, % O
+                                   { I }, % I
+                                   { G }, % G
+                                   { H }, % H
+                                   { Ma }, % Ma
+                                   { Mb }, % Mb
+                                   { Mc }, % Mc
+                                   { Ta }, % Ta
+                                   { Tb }, % Tb
+                                   { Tc }, % Tc
+                                   { Ha }, % Ha
+                                   { Hb }, % Hb
+                                   { Hc }, % Hc    
+                                   { Pa }, % Pa
+                                   { Pb }, % Pb
+                                   { Pc }, % Pc
+                                   { Na }, % Na
+                                   { Nb }, % Nb
+                                   { Nc }, % Nc
+                                   { Ppa }, % Ppa
+                                   { Ppb }, % Ppb
+                                   { Ppc }, % Ppc
+                                   { Sa }, % Sa
+                                   { Sb }, % Sb
+                                   { Sc }, % Sc
+                                   { Tpa }, % Tpa
+                                   { Tpb }, % Tpb
+                                   { Tpc }, % Tpc                               
+                                  ];
+                                                                                                                                                                                                              
+ coincident_lines = [ { a }, 
+                                  { b },
+                                  { c },
+                                  { ma },
+                                  { mb }, 
+                                  { mc }, 
+                                  { sa }, 
+                                  { sb }, 
+                                  { sc },
+                                  { ha }, 
+                                  { hb }, 
+                                  { hc },
+                                  { ta },
+                                  { tb }, 
+                                  { tc },
+                                  { mta }, 
+                                  { mtb }, 
+                                  { mtc },
+                                  { spa },
+                                  { spb },
+                                  { spc },
+                                  { ra },
+                                  { rb }, 
+                                  { rc },
+                                  { rpa },
+                                  { rpb },
+                                  { rpc },
+                                  { lIMa },
+                                  { lAPpa }, 
+                                  { lhPa }, 
+                                  { lIMb }, 
+                                  { lBPpb }, 
+                                  { lhPb }, 
+                                  { lIMc }, 
+                                  { lCPpc }, 
+                                  { lhPc },
+                                  { hab}, 
+                                  { hac}, 
+                                  { hbc },
+                                  { oa }, 
+                                  { ob }, 
+                                  { oc },
+                                ];
+ coincident_circles = [ { kO }, 
+                                     { kI },
+                                     { kMa },
+                                     { kMb },
+                                     { kMc },
+                                     { kNa },
+                                     { kNb },
+                                     { kNc },
+                                     { kSa },
+                                     { kSb }, 
+                                     { kSc },
+                                     { koIA }, %koIA
+                                     { koIB }, % koIB
+                                     { koIC }, % koIC
+                                     {koIMa}, % koIMa, 
+                                     {koIMb}, % koIMb
+                                     {koIMc}, % koIMc
+                                     {koSaB}, % koSaB
+                                     {koSaC}, % koSaC
+                                     {koSbA}, % koSbA
+                                     {koSbC}, % koSbC
+                                     {koScA}, % koScA
+                                     {koScB}, % koScB
+                                     {koTaTpa}, % koTaTpa
+                                     {koTbTpb}, % koTbTpb
+                                     {koTcTpc}, % koTcTpc
+                                     { locTaHbAlpha2 }, % locTaHbAlpha2
+                                     {  locTaHcAlpha2}, % locTaHcAlpha2
+                                     { locTbHcBeta2}, % locTbHcBeta2, 
+                                     {  locTbHaBeta2}, % locTbHaBeta2, 
+                                     { locTcHaGamma2}, % locTcHaGamma2
+                                     { locTcHbGamma2}, %  locTcHbGamma2
+                                     { locTbTcAlpha2Pi2}, 
+                                     { locTaTbGamma2Pi2}, 
+                                     { locTaTcBeta2Pi2},
+                                     { locTaTbGamma }, 
+                                     { locTaTbAlpha2 },
+                                     {  locTaTbBeta2 }, 
+                                     { locaTaTcBeta }, 
+                                     { locTaTcAlpha2 }, 
+                                     { locTaTcGamma2 }, 
+                                     { locTbTcAlpha }, 
+                                     { locTbTcBeta2 }, 
+                                     { locTbTcGamma2 }, 
+                                     { locTbIAlpha2 }, 
+                                     { locTcIAlpha2 }, 
+                                     { locTaIBeta2 }, 
+                                     { locTcIBeta2 }, 
+                                     { locTbIGamma2 }, 
+                                     { locTaIGamma2 }, 
+                                   ];
+ 
+parallel_lines = [ { mta }, % a
+                             { mtb }, % b
+                             { mtc }, % c
+                             { ha, ra, rpa },   % ma
+                             { hb, rb, rpb },   % mb
+                             { hc, rc, rpc },   % mc
+                             { },  % sa
+                             { },  % sb
+                             { },  % sc
+                             { ma, ra, rpa },  %ha
+                             { mb, rb, rpb },  %hb
+                             { mc, rc, rpc },  %hc
+                             { },   %ta
+                             { },   %tb
+                             { },   %tc
+                             { a }, %mta
+                             { b }, %mtb
+                             { c },  %mtc
+                             { },              % spa 
+                             { },              % spb
+                             { },              % spc
+                            { ma, ha, rpa },              % ra
+                            { mb, hb, rpb },              % rb
+                            { mc, hc, rpc },              % rc
+                            { ma, ha, ra },              % rpa
+                            { mb, hb, rb },              % rpb
+                            { mc, hc, rc },              % rpc    
+                            { lAPpa, lhPa }, % lIMa, 
+                            { lIMa, lhPa }, % lAPpa, 
+                            { lIMa, lAPpa }, % lhPa, 
+                            { lBPpb, lhPb }, % lIMb, 
+                            { lIMb, lhPb }, % lBPpb, 
+                            { lIMb, lBPpb }, % lhPb,
+                            { lCPpc, lhPc }, % lIMc,
+                            { lIMc, lhPc }, % lCPpc, 
+                            { lIMc, lCPpc }, % lhPc      
+                            { }, % hab
+                            { }, % hac
+                            { }, % hbc     
+                            {}, % oa
+                            {}, % ob
+                            {}, % oc     
+                          ];
+                                                             
+numOfKRTriples = 10;
+known_ratio_triples = [| A, B, Mc |
+                                        A, C, Mb |
+                                        B, C, Ma |
+                                        A, G, Ma |
+                                        B, G, Mb |
+                                        C, G, Mc |
+                                        O, G, H |
+                                        Ma, Pa, Ppa|
+                                        Mb, Pb, Ppb|
+                                        Mc, Pc, Ppc |];          
+                                        
+numOfKRQuadruples = 6;
+known_ratio_quadruples = [| A, B, Ma, Mb |
+                                                A, C, Ma, Mc |
+                                                B, C, Mb, Mc |
+                                                A, Ma, Mb, Mc |
+                                                B, Ma, Mb, Mc |
+                                                C, Ma, Mb, Mc |];            
+                                                
+numOfAngleDefs = 42; %%%
+angle_defs                   = [(a, b, { Gamma }),  % Gamma
+                                          (a, c, { Beta }),   % Beta
+                                          (b, c, { Alpha }),   % Alpha
+                                          (a, sb, { Beta }),  % Beta/2
+                                          (a, sc, { Gamma }),   % Gamma/2
+                                          (b, sa, { Alpha }),   % Alpha/2
+                                          (b, sc, { Gamma }),   % Gamma/2
+                                          (c, sa, { Alpha }),   % Alpha/2
+                                          (c, sb, { Beta }),   % Beta/2
+                                          (a,mtc, { Beta }), % Beta
+                                          (a,mtb, { Gamma }), % Gamma
+                                          (b,mtc, { Alpha }), % Alpha
+                                          (b,mta, { Gamma }), % Gamma
+                                          (c,mta, { Beta }),  % Beta
+                                          (c,mtb, { Alpha }), % Alpha
+                                          (mta,mtb, { Gamma }), % Gamma
+                                          (mta,mtc, { Beta }), % Beta
+                                          (mtb,mtc, { Alpha }),  % Alpha
+                                          (a, hab, { Alpha }),  % Alpha
+                                          (b, hab, { Beta }),  % Beta
+                                          (c, hbc, { Gamma }), % Gamma 
+                                          (b, hbc, { Beta }), % Beta
+                                          (a, hac, { Alpha }), % Alpha ??
+                                          (c, hac, { Gamma }), % Gamma
+                                          (sb, sc, { Alpha }),  % Alpha/2 + pi/2
+                                          (sa, sb, { Gamma }), % Gamma/2 + pi/2
+                                          (sa, sc, { Beta }),  % Beta/2 + pi/2 
+                                          (hab, hac, { aHa }), % aHa
+                                          (ha, hab, { aHa }), % aHa/2
+                                          (ha, hac, { aHa }), % aHa/2
+                                          (hac, hbc, { aHc }), % aHc
+                                          (hc, hac, { aHc }),  % aHc/2
+                                          (hc, hbc, { aHc }),  % aHc/2
+                                          (hab, hbc, { aHb }), % aHb
+                                          (hb, hab, { aHb }), % aHb/2
+                                          (hb, hbc, { aHb }),  % aHb/2
+                                          (sa, ha, { aA }), % aA
+                                          (sa, oa, { aA }), % aA
+                                          (sb, hb, { aB }), % aB
+                                          (sb, ob, { aB }), % aB
+                                          (sc, hc, { aC }), % aC
+                                          (sc, oc, { aC })]; % aC
+                                          
+numOfPerpBisectors = 9;
+
+perp_bisectors =                 [(A, B, mc),
+                                              (A, C, mb),
+                                              (B, C, ma),
+                                              (A, Ha, mta),
+                                              (B, Hb, mtb),
+                                              (C, Hc, mtc),
+                                              (Pa, Ppa, ma),
+                                              (Pb, Ppb, mb),
+                                              (Pc, Ppc, mc)];
+                                                                                         
+                                                                                                                                                                                                                                                             
+numOfHQuadruples = 3;                  
+harmonic_quadruples = [(B,C,Ta,Tpa),
+                                         (A,C,Tb,Tpb),
+                                         (A,B,Tc,Tpc)];                                                                                                                                                                                                                                                                                                       
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+
+numOfHomothetyTriples = 6;
+
+homothety_triples = [(A, mta, a),
+                                    (B, mtb, b),
+                                    (C, mtc, c),
+                                    (Ma, lAPpa, lhPa),
+                                    (Mb, lBPpb, lhPb),
+                                    (Mc, lCPpc, lhPc)];
+
+numOfLocusDefs = 24;
+
+locus_defs = [(Ta, Hb, Alpha, locTaHbAlpha2),
+                       (Ta, Hc, Alpha, locTaHcAlpha2), 
+                       (Tb, Hc, Beta, locTbHcBeta2),
+                       (Tb, Ha, Beta, locTbHaBeta2), 
+                       (Tc, Ha, Gamma, locTcHaGamma2),
+                       (Tc, Hb, Gamma, locTcHbGamma2), 
+                       (Tb, Tc, Alpha,  locTbTcAlpha2Pi2), 
+                       (Ta, Tb, Gamma, locTaTbGamma2Pi2), 
+                       (Ta, Tc, Beta, locTaTcBeta2Pi2),
+                       (Ta, Tb, Gamma,  locTaTbGamma), 
+                       (Ta, Tb, Alpha, locTaTbAlpha2), 
+                       (Ta, Tb, Beta, locTaTbBeta2), 
+                       (Ta, Tc, Beta, locaTaTcBeta),
+                       (Ta, Tc, Alpha, locTaTcAlpha2), 
+                       (Ta, Tc, Gamma, locTaTcGamma2), 
+                       (Tb, Tc, Alpha, locTbTcAlpha), 
+                       (Tb, Tc, Beta, locTbTcBeta2), 
+                       (Tb, Tc, Gamma, locTbTcGamma2), 
+                       (I, Tb, Alpha, locTbIAlpha2), 
+                       (I, Tc, Alpha, locTcIAlpha2), 
+                       (I, Ta, Beta, locTaIBeta2), 
+                       (I, Tc, Beta, locTcIBeta2), 
+                       (I, Tb, Gamma, locTbIGamma2), 
+                       (I, Ta, Gamma, locTaIGamma2)];
+
+maxPoints = 4;
+maxLines = 2;                               
+maxCircles = 2;    
+maxAngles = 1;                    
