@@ -2,9 +2,10 @@
 
 ## Introduction
 
-This repository contains a MinZinc constraint model for solving
-triangle ruler-and-compass construction problems. The details of
-the encoding can be found in the corresponding paper.
+This repository contains a MiniZinc constraint model for solving
+triangle ruler-and-compass construction problems from the Wernick's
+list. The details of the encoding can be found in the corresponding
+paper.
 
 ## Organization of the repository
 
@@ -34,12 +35,12 @@ The repository contains the following files:
   relations between them, in the form of values of appropriate model
   parameters.
 
-- maxSteps.dzn: for convinience, this file contains an assignment of
+- maxSteps.dzn: for convenience, this file contains an assignment of
   a value to maxSteps parameter
 
 - minSteps.dzn: similar for minSteps parameter
 
-- files of the form X_Y_Z.dzn: these files contains setups for
+- files of the form X_Y_Z.dzn: these files contain setups for
   particular problems from the Wernick's list (given objects, which
   are always the points X,Y,Z, and goal objects, which are always the
   points A,B,C).
