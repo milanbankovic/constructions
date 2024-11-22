@@ -58,5 +58,5 @@ and invoke the following command for a chosen problem:
 
 where <model> may be any of the two variants of the model, and
 X_Y_Z.dzn may be any of data files for a specific problem. You can
-manually edit files maxSteps.dzn to change the upper (or lower) limit
+manually edit files maxSteps.dzn to change the upper limit
 for the number of steps.
