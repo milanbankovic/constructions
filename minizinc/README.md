@@ -1,4 +1,4 @@
-# Automated triangle ruler-and-compass constructions using constraint solvers
+# MiniZinc model
 
 ## Introduction
 
@@ -44,15 +44,16 @@ from:
 
 	https://www.minizinc.org/software.html
 
-After that (or before that), you can get this repository to you computer:
+After that (or before that), you can get this repository to your computer:
 
-      git clone https://github.com/milanbankovic/constructions
+      git clone https://github.com/milanbankovic/constructionsa
 
 Enter the repository:
 
       cd constructions/minizinc
 
-and invoke the following command for a chosen problem:
+To solve a chosen problem using the `chuffed` finite-domain constraint
+solver, invoke the following command for the problem:
 
     <path_to_minizinc>/bin/minizinc --solver chuffed <model>.mzn maxSteps.dzn X_Y_Z.dzn
 
@@ -60,3 +61,4 @@ where <model> may be any of the two variants of the model, and
 X_Y_Z.dzn may be any of data files for a specific problem. You can
 manually edit files maxSteps.dzn to change the upper limit
 for the number of steps.
+
