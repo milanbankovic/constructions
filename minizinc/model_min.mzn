@@ -8,8 +8,8 @@ enum Angle; % All considered angles
 
 % The following parameters are based on our assumptions
 
-array [Point] of set of Point: coincident_points; % Points that coincide with a given point
-
+array [Point] of set of Point: coincident_points; % Points that coincide with a given point                                                                                                                                                                                                                                                                                                                 
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
 array [Line] of set of Line: coincident_lines; % Lines that coincide with a given line
 
 array [Circle] of set of Circle: coincident_circles; % Circles that coincide with a given circle
@@ -64,44 +64,45 @@ array [1..numOfLocusDefs] of LocusDef: locus_defs;
 
 % Is circle k the locus of points such that XY is seen at angle f(fi)
 predicate is_locus(var Point: X, var Point: Y, var Angle: fi, var Circle: k) = 
- let { array[int] of var int: L = sort([X,Y]); } in exists(i in 1..numOfLocusDefs) (locus_defs[i].1 = L[1] /\ locus_defs[i].2 = L[2] /\ locus_defs[i].3 = fi /\ locus_defs[i].4 = k);
+  exists(i in 1..numOfLocusDefs) (locus_defs[i].1 = X /\ locus_defs[i].2 = Y /\ locus_defs[i].3 = fi /\ locus_defs[i].4 = k);
 
 % Is ratio XZ/ZY is known?
 predicate known_ratio3(var Point: X, var Point: Y, var Point: Z) = 
-  let { array[int] of var int: S = sort([X,Y,Z]); } in  exists(i in 1..numOfKRTriples) (forall(j in 1..3) (S[j] = known_ratio_triples[i,j]));
+   exists(i in 1..numOfKRTriples) (X = known_ratio_triples[i,1] /\ Y = known_ratio_triples[i,2] /\ Z = known_ratio_triples[i,3]);
                                      
 % Is ratio XY/ZW is known?
 predicate known_ratio4(var Point: X, var Point: Y, var Point: Z, var Point: W) = 
-  let { array[int] of var int: S = sort([X,Y,Z,W]); } in exists(i in 1..numOfKRQuadruples) (forall(j in 1..4) (S[j] = known_ratio_quadruples[i,j]));                                                                                     
+   exists(i in 1..numOfKRQuadruples) (X = known_ratio_quadruples[i,1] /\ Y = known_ratio_quadruples[i,2] /\ Z = known_ratio_quadruples[i,3] /\ W = known_ratio_quadruples[i,4]);                                                                                     
                                                                                                                                                                                               
 % Is the angle between lines p and q is computable using the angles constructed so far? 
 predicate computable_angle(var Line: p, var Line: q, var set of Angle: known_angles) = 
-       let { array[int] of var int: L = sort([p, q]); } in exists(i in 1..numOfAngleDefs) (L[1] = angle_defs[i].1 /\ L[2] = angle_defs[i].2 /\ forall(a in angle_defs[i].3) (a in known_angles));
+   exists(i in 1..numOfAngleDefs) (p = angle_defs[i].1 /\ q = angle_defs[i].2 /\ forall(a in angle_defs[i].3) (a in known_angles));
                
 % Is the angle a computable using the angle between the lines p and q?
 predicate obtainable_angle(var Line: p, var Line: q, var Angle: a) = 
-       let { array[int] of var int: L = sort([p, q]); } in exists(i in 1..numOfAngleDefs) (L[1] = angle_defs[i].1 /\ L[2] = angle_defs[i].2 /\ angle_defs[i].3 = { a });
+     exists(i in 1..numOfAngleDefs) (p = angle_defs[i].1 /\ q = angle_defs[i].2 /\ angle_defs[i].3 = { a });
 
 % Is the segment XY a diameter of the circle C?
 predicate is_diameter(var Point: X, var Point: Y, var Circle: C) = 
-     let { array[int] of var int: L = sort([X,Y]); } in forall(i in 1..2) (occurs(circle_diameter[C,i]) /\ L[i] = deopt(circle_diameter[C,i]));
-
+   occurs(circle_diameter[C,1]) /\ X = deopt(circle_diameter[C,1]) /\ occurs(circle_diameter[C,2]) /\ Y = deopt(circle_diameter[C,2]);
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          % Is line p the perpendicular bisector of the segmen XY
 predicate is_perp_bisector(var Point: X, var Point: Y, var Line: p) = 
-    let { array[int] of var int: L = sort([X,Y]); } in exists(i in 1..numOfPerpBisectors) (perp_bisectors[i].1 = L[1] /\  perp_bisectors[i].2 = L[2] /\ perp_bisectors[i].3 = p);
-
-% Negation of the previous predicate (not is_perp_bisector() does not work because of the let expression)
-
+   exists(i in 1..numOfPerpBisectors) (perp_bisectors[i].1 = X /\  perp_bisectors[i].2 = Y /\ perp_bisectors[i].3 = p);
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+% Negation of the previous predicate (not is_perp_bisector() does not work because of the let expression)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
 predicate is_not_perp_bisector(var Point: X, var Point: Y, var Line: p) = 
-    let { array[int] of var int: L = sort([X,Y]); } in forall(i in 1..numOfPerpBisectors) (perp_bisectors[i].1 != L[1]  \/ perp_bisectors[i].2 != L[2] \/ perp_bisectors[i].3 != p);
-
-% Is H(X,Y,Z,W) (in any order of points) ?
+   forall(i in 1..numOfPerpBisectors) (perp_bisectors[i].1 != X  \/ perp_bisectors[i].2 != Y \/ perp_bisectors[i].3 != p);
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         % Is H(X,Y,Z,W) (in any order of points) ?                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
 predicate are_harmonic(var Point: X, var Point: Y, var Point: Z, var Point: W) = 
-    let { array[int] of var int: L = sort([X,Y,Z,W]); } in exists(i in 1..numOfHQuadruples) (harmonic_quadruples[i].1 = L[1] /\ harmonic_quadruples[i].2 = L[2] /\ harmonic_quadruples[i].3 = L[3] /\ harmonic_quadruples[i].4 = L[4]);
+   exists(i in 1..numOfHQuadruples) (harmonic_quadruples[i].1 = X /\ harmonic_quadruples[i].2 = Y /\ harmonic_quadruples[i].3 = Z /\ harmonic_quadruples[i].4 = W);
     
 % Is line q the image of line p by homothety with the center X (and any coeficient)?    
 predicate is_homothety(var Point: X, var Line: p, var Line: q) = 
-   let { array[int] of var int: L = sort([p,q]); } in exists(i in 1..numOfHomothetyTriples) (homothety_triples[i].1 = X /\ homothety_triples[i].2 = L[1] /\ homothety_triples[i].3 = L[2]);      
-
+   exists(i in 1..numOfHomothetyTriples) (homothety_triples[i].1 = X /\ homothety_triples[i].2 = p /\ homothety_triples[i].3 = q);      
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
 %Supported types of construction steps                                                                           
 enum ConsType =  { LineThrough,
                                     LineIntersect,
@@ -207,7 +208,7 @@ array[1..maxSteps, 1..maxCircles] of var Circle: circles;
 % angles[i,j] is the j-th angle used in i-th step (don't care if not used)
 array[1..maxSteps, 1..maxAngles] of var Angle: angles;
 
-var 1..maxSteps: n;  % actual number of steps (this variable is minimized)
+var 1..maxSteps: n;  % actual number of steps (subject to minimization)
 
 % The following constraints describe the semantics of particular construction step types
 
@@ -236,7 +237,9 @@ constraint forall(i in 1..n)
                                                       %lines[i,1] in known_lines[i-1] /\
                                                       %lines[i,1] in inc_lines[points[i,1]] /\
                                                       %lines[i,1] in inc_lines[points[i,2]] /\
-                                                      known_ratio3(points[i,1], points[i,2], points[i,3]) /\
+                                                      (known_ratio3(points[i,1], points[i,2], points[i,3]) \/ 
+                                                       known_ratio3(points[i,1], points[i,3], points[i,2]) \/
+                                                       known_ratio3(points[i,3], points[i,1], points[i,2])) /\
                                                       not (points[i, 3] in known_points[i-1]) /\
                                                       known_points[i] = known_points[i -1] union { points[i, 3] } /\
                                                       known_lines[i] = known_lines[i - 1] /\
@@ -258,7 +261,10 @@ constraint forall(i in 1..n)
                                                       %lines[i,1] in inc_lines[points[i,2]] /\
                                                       %lines[i,2] in inc_lines[points[i,3]] /\
                                                       %lines[i,2] in inc_lines[points[i,4]] /\
-                                                      known_ratio4(points[i,1], points[i,2], points[i,3], points[i,4]) /\
+                                                      (known_ratio4(points[i,1], points[i,2], points[i,3], points[i,4]) \/
+                                                       known_ratio4(points[i,1], points[i,2], points[i,4], points[i,3]) \/
+                                                       known_ratio4(points[i,1], points[i,4], points[i,2], points[i,3]) \/
+                                                       known_ratio4(points[i,4], points[i,1], points[i,2], points[i,3])) /\
                                                       not (points[i, 4] in known_points[i-1]) /\
                                                       known_points[i] = known_points[i -1] union { points[i, 4] } /\
                                                       known_lines[i] = known_lines[i - 1] /\
@@ -526,7 +532,8 @@ constraint forall(i in 1..n)
    construct[i] = Homothety -> (points[i,1] in known_points[i-1] /\
                                                     lines[i,1] in known_lines[i-1] /\
                                                     not (lines[i,2] in known_lines[i-1]) /\
-                                                    is_homothety(points[i,1], lines[i,1], lines[i,2]) /\
+                                                    (is_homothety(points[i,1], lines[i,1], lines[i,2]) \/
+                                                     is_homothety(points[i,1], lines[i,1], lines[i,2])) /\
                                                     known_lines[i] = known_lines[i-1] union { lines[i,2] } /\
                                                     known_points[i] = known_points[i-1] /\
                                                     known_circles[i] = known_circles[i-1]  /\
@@ -555,7 +562,8 @@ constraint forall(i in 1..n)
                                                         points[i,1] in known_points[i-1] /\
                                                         lines[i,1] in inc_lines[points[i,1]] /\
                                                         lines[i,2] in inc_lines[points[i,1]] /\
-                                                        computable_angle(lines[i,1], lines[i,2], known_angles[i-1]) /\
+                                                        (computable_angle(lines[i,1], lines[i,2], known_angles[i-1]) \/ 
+                                                         computable_angle(lines[i,2], lines[i,1], known_angles[i-1])) /\
                                                         not (lines[i,2] in known_lines[i-1]) /\
                                                         known_angles[i] = known_angles[i-1] /\
                                                         known_points[i] = known_points[i-1] /\
@@ -574,7 +582,10 @@ constraint forall(i in 1..n)
                                                                   not (points[i,3] in coincident_points[points[i,1]]) /\
                                                                   not (points[i,3] in coincident_points[points[i,2]]) /\ 
                                                                   not (points[i,4] in known_points[i-1]) /\
-                                                                  are_harmonic(points[i,1], points[i,2], points[i,3], points[i,4]) /\ 
+                                                                  (are_harmonic(points[i,1], points[i,2], points[i,3], points[i,4]) \/ 
+                                                                   are_harmonic(points[i,1], points[i,2], points[i,4], points[i,3]) \/
+                                                                   are_harmonic(points[i,1], points[i,4], points[i,2], points[i,3]) \/
+                                                                   are_harmonic(points[i,4], points[i,1], points[i,2], points[i,3])) /\ 
                                                                   known_points[i] = known_points[i-1] union { points[i,4] } /\
                                                                   known_lines[i] = known_lines[i-1] /\
                                                                   known_circles[i] = known_circles[i-1] /\
@@ -632,6 +643,7 @@ constraint forall(i in 1..n)
                                                                           circles[i,1] in inc_circles[points[i,1]] /\
                                                                           circles[i,1] in inc_circles[points[i,2]] /\
                                                                           is_not_perp_bisector(points[i,1], points[i,2], lines[i,1]) /\
+                                                                          is_not_perp_bisector(points[i,2], points[i,1], lines[i,1]) /\
                                                                           known_points[i] = known_points[i-1] union { deopt(circle_center[circles[i,1]]) } /\
                                                                           known_lines[i] = known_lines[i-1] /\
                                                                           known_circles[i] = known_circles[i-1] /\
@@ -688,5 +700,4 @@ output ["Solved in \(n) steps;\n"] ++ ["\(i). " ++ if fix(construct[i]) = LineIn
                                                             elseif fix(construct[i]) = HarmonicQuadruple then "point harmonic with points \(points[i,1]), \(points[i,2]) and \(points[i,3]) --> \(points[i,4])\n"
                                                             elseif fix(construct[i]) = Homothety then "line obtained by homothety with center in \(points[i,1]) from line \(lines[i,1]) --> \(lines[i,2])\n" 
                                                             elseif fix(construct[i]) = Locus then "locus over segment with endpoints \(points[i,1]) and \(points[i,2]) seen at angle f(\(angles[i,1])) --> \(circles[i,1])\n"
-                                                            else "unknown step\n" endif  | i in 1..fix(n)];
-							    
+                                                            else "unknown step\n" endif  | i in 1..fix(n)];                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        

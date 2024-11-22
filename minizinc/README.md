@@ -22,12 +22,6 @@ The repository contains the following files:
   for the number of steps should be still provided by maxSteps
   parameter.
 
-- model_inc.dzn: an optimization variant of the model, where both
-  minSteps and maxSteps parameters should be provided. This model is
-  suitable for incremental strategy of searching for a plan of the
-  minimal length.
-
-
 - data.dzn: this data file is included from the models by MiniZinc's
   include directive. It contains the database of the geometric
   knowledge needed for solving the problems from the Wernick's list.
@@ -37,8 +31,6 @@ The repository contains the following files:
 
 - maxSteps.dzn: for convenience, this file contains an assignment of
   a value to maxSteps parameter
-
-- minSteps.dzn: similar for minSteps parameter
 
 - files of the form X_Y_Z.dzn: these files contain setups for
   particular problems from the Wernick's list (given objects, which
@@ -58,14 +50,13 @@ After that (or before that), you can get this repository to you computer:
 
 Enter the repository:
 
-      cd constructions/
+      cd constructions/minizinc
 
 and invoke the following command for a chosen problem:
 
-    <path_to_minizinc>/bin/minizinc --solver chuffed <model>.mzn maxSteps.dzn [minSteps.dzn] X_Y_Z.dzn
+    <path_to_minizinc>/bin/minizinc --solver chuffed <model>.mzn maxSteps.dzn X_Y_Z.dzn
 
-where <model> may be any of the three variants of the model, and
-X_Y_Z.dzn may be any of data files for a specific problem. File
-minSteps.dzn should be provided only in case of model_inc.mzn. You can
-manually edit files maxSteps.dzn and minSteps.dzn to change the upper
-(or lower) limit for the number of steps.
+where <model> may be any of the two variants of the model, and
+X_Y_Z.dzn may be any of data files for a specific problem. You can
+manually edit files maxSteps.dzn to change the upper (or lower) limit
+for the number of steps.
