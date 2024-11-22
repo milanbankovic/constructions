@@ -7,5 +7,5 @@ This repository consists of two sub-repositories:
 
 - `pddl`: contains the PDDL model of the triangle construction problem
 
-For details, see the README.md in the corresponding subdirectories.
+For details, see README.md files in the corresponding subdirectories.
 
