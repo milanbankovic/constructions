@@ -3,7 +3,7 @@
 ## Introduction
 
 This repository contains a MiniZinc constraint model for solving
-triangle ruler-and-compass construction problems from the Wernick's
+triangle straightedge-and-compass construction problems from the Wernick's
 list. The details of the encoding can be found in the corresponding
 paper.
 
